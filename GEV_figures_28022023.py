@@ -6,8 +6,6 @@ Final figures for at-risk paper
 
 @vikki.thompson
 '''
-
-# Load neccessary libraries
 import iris
 import iris.coord_categorisation as icc
 from iris.coord_categorisation import add_season_membership
@@ -28,8 +26,6 @@ import xarray as xr
 import netCDF4 as nc
 from matplotlib import ticker, cm
 from matplotlib.colors import LogNorm
-#import seaborn as sns
-
 
 ### Generic functions
 def time_slice(cube, year1, year2):
@@ -118,22 +114,13 @@ def how_much_higher(data_array):
     obs = np.max(data_array)
     return mod-obs
 
-
-                    
-
-
-
 # 1970-2021 global mean surface temp (nasa giss)
-
-
 GMST = [0.03, -0.03, 0.06, 0.03, 0.05, -0.20, -0.11, -0.06, -0.02, -0.08, 0.05, 0.03, -0.08, 0.01, 0.16, -0.07, -0.01, -0.10, 0.18, 0.07, 0.17, 0.26, 0.32, 0.14, 0.31, 0.16, 0.12, 0.18, 0.32, 0.39, 0.27, 0.45, 0.41, 0.22, 0.23, 0.32, 0.45, 0.33, 0.46, 0.61, 0.38, 0.39, 0.54, 0.63, 0.62, 0.54, 0.68, 0.64, 0.67, 0.54, 0.66, 0.72, 0.61, 0.65, 0.68, 0.75, 0.90, 1.02, 0.92, 0.85, 0.98, 1.02, 0.85]
 GMST_yr = np.arange(1959, 2022, 1)
-
 
 ############
 plt.ion()
 plt.show()
-
 # Antarctica regions: 
 regs_in_ant = np.arange(170, 191)
 
@@ -178,7 +165,6 @@ def one_in_hundred(data_array):
     ret_lev, chance = return_levels_plot(dist_pdf, x_val)
     return ret_lev[np.abs(np.asarray(chance)-1).argmin()]
 
-
 def plot_data_GMST(axs_sel, ann_max, GMST):
     axs_sel.plot(GMST, ann_max, '+', label='Observed TXx')
     a, b = np.polyfit(GMST, ann_max, 1)
@@ -186,23 +172,7 @@ def plot_data_GMST(axs_sel, ann_max, GMST):
     for each in np.sort(GMST): bestfit.append(a*each+b)
     axs_sel.plot([np.min(GMST), np.max(GMST)], [np.min(bestfit), np.max(bestfit)], label='Fit')
 
-
-
-
-'''
-## For table
-reg = [74, 59, 127, 211, 139, 36, 200, 44, 168, 149]
-hund_list = []
-max_list = []
-for each in np.arange(237):
-    hund_list.append(one_in_hundred(adjust_obs(load_annmax(each), GMST)))
-    max_list.append(np.max(adjust_obs(load_annmax(each), GMST)))
-'''
-
-
 ### Fig.1 
-#
-#
 reg = 9 # Alberta, Canada
 ann_max = load_annmax(reg)
 offset = adjust_obs(ann_max, GMST)
@@ -253,14 +223,7 @@ for each in [axs[0,1], axs[1,1]]:
 plt.tight_layout()
 plt.savefig('fig1_final.png', dpi=300)
 plt.savefig('fig1_final.pdf')
-
 #plt.close()
-
-
-
-
-
-
 
 ##### GLOBAL ######
 def offset_higher(reg):
@@ -394,10 +357,7 @@ def offset_100(reg):
         chance2.append(100.*1/each)
     return ret_lev[(np.abs(np.asarray(chance2)-100)).argmin()]
 
-
 ## Fig 2
-#
-#
 vals_retper_without = []
 vals_abs_without = []
 for each in np.arange(237):
@@ -472,12 +432,7 @@ plt.savefig('fig2_final.png', dpi=300)
 plt.savefig('fig2_final.pdf')
 #plt.close()
 
-
-
-
-## Fig 3
-#
-#	
+## Fig 3	
 reg_retper = vals_retper_without.copy()
 reg_abs = vals_abs_without.copy()
 # Delete the Antarctic regions
@@ -549,15 +504,7 @@ plt.savefig('fig3_final.png', dpi=300)
 plt.savefig('fig3_final.pdf')
 #plt.close()
 
-
-
-
-
-
-
-## FigS1
-#
-#
+# FigS1
 a = []; b=[]; sc=[] #shape, loc, scale arrays
 for each in np.arange(237):
     print(each)
@@ -617,8 +564,3 @@ for axes in axs:
 
 plt.tight_layout()
 plt.savefig('gev_Sfig1.png', dpi=300)
-
-
-
-
-

@@ -141,8 +141,6 @@ def remove_max_mod(ann_max, GMST):
         GMST_new.append(np.delete(GMST, np.abs(ann_max[ens] - np.max(ann_max[ens])).argmin()))
     return ann_max_new, GMST_new
 
-
-### Global map functions
 def one_in_tenthousand(data_array):
     shape, loc, scale = gev.fit(data_array)
     x_val = np.linspace(np.min(data_array)-.5, np.max(data_array)+2, 1000)
@@ -155,7 +153,6 @@ def how_much_higher(data_array):
     obs = np.max(data_array)
     return mod-obs
 
-## Global mean surface temp timeseries
 def load_CanESM5_GMST(y1, y2):
     '''
     Returns cube of tas GMST

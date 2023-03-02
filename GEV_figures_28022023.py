@@ -27,7 +27,6 @@ import netCDF4 as nc
 from matplotlib import ticker, cm
 from matplotlib.colors import LogNorm
 
-### Generic functions
 def time_slice(cube, year1, year2):
     year_cons = iris.Constraint(time=lambda cell: year1 <= cell.point.year <= year2)
     return cube.extract(year_cons)
@@ -35,7 +34,6 @@ def time_slice(cube, year1, year2):
 def cube_to_array(cube):
     return cube.data.reshape(np.shape(cube.data)[0]*np.shape(cube.data)[1])
 
-### GEV functions
 def return_levels_plot(distribution_pdf, x_values):
     '''
     Calculates probability of return levels 
@@ -114,16 +112,6 @@ def how_much_higher(data_array):
     obs = np.max(data_array)
     return mod-obs
 
-# 1970-2021 global mean surface temp (nasa giss)
-GMST = [0.03, -0.03, 0.06, 0.03, 0.05, -0.20, -0.11, -0.06, -0.02, -0.08, 0.05, 0.03, -0.08, 0.01, 0.16, -0.07, -0.01, -0.10, 0.18, 0.07, 0.17, 0.26, 0.32, 0.14, 0.31, 0.16, 0.12, 0.18, 0.32, 0.39, 0.27, 0.45, 0.41, 0.22, 0.23, 0.32, 0.45, 0.33, 0.46, 0.61, 0.38, 0.39, 0.54, 0.63, 0.62, 0.54, 0.68, 0.64, 0.67, 0.54, 0.66, 0.72, 0.61, 0.65, 0.68, 0.75, 0.90, 1.02, 0.92, 0.85, 0.98, 1.02, 0.85]
-GMST_yr = np.arange(1959, 2022, 1)
-
-############
-plt.ion()
-plt.show()
-# Antarctica regions: 
-regs_in_ant = np.arange(170, 191)
-
 def plot_data_GMST(axs_sel, ann_max, GMST):
     axs_sel.plot(GMST, ann_max, 'b+')
     a, b = np.polyfit(GMST, ann_max, 1)
@@ -147,7 +135,7 @@ def plot_EVT(axs_sel, data_array):
     plot_points(axs_sel, data_array)
     plot_gev(axs_sel, data_array, np.min(data_array)-.5, np.max(data_array)+2)
 
-def load_annmax(reg):
+    def load_annmax(reg):
     return np.load('/user/work/hh21501/era5_regions/ann_list_19592021.npy')[:,reg]-273.15
 
 def remove_max(ann_max, GMST):
@@ -171,6 +159,20 @@ def plot_data_GMST(axs_sel, ann_max, GMST):
     bestfit = []
     for each in np.sort(GMST): bestfit.append(a*each+b)
     axs_sel.plot([np.min(GMST), np.max(GMST)], [np.min(bestfit), np.max(bestfit)], label='Fit')
+
+
+
+
+
+############
+# 1970-2021 global mean surface temp (nasa giss)
+GMST = [0.03, -0.03, 0.06, 0.03, 0.05, -0.20, -0.11, -0.06, -0.02, -0.08, 0.05, 0.03, -0.08, 0.01, 0.16, -0.07, -0.01, -0.10, 0.18, 0.07, 0.17, 0.26, 0.32, 0.14, 0.31, 0.16, 0.12, 0.18, 0.32, 0.39, 0.27, 0.45, 0.41, 0.22, 0.23, 0.32, 0.45, 0.33, 0.46, 0.61, 0.38, 0.39, 0.54, 0.63, 0.62, 0.54, 0.68, 0.64, 0.67, 0.54, 0.66, 0.72, 0.61, 0.65, 0.68, 0.75, 0.90, 1.02, 0.92, 0.85, 0.98, 1.02, 0.85]
+GMST_yr = np.arange(1959, 2022, 1)
+
+plt.ion()
+plt.show()
+# Antarctica regions: 
+regs_in_ant = np.arange(170, 191)
 
 ### Fig.1 
 reg = 9 # Alberta, Canada
@@ -514,7 +516,6 @@ for each in np.arange(237):
     b.append(loc)
     sc.append(scale)
 
-#sns.set_style("white")
 region_fp = 'region_fx-WRAF05-v4-1_WRAF_All-Hist_est1_v4-1_4-1-0_000000-000000.nc'
 region_ds = xr.open_mfdataset(region_fp, parallel=True)
 lats = region_ds.lat
